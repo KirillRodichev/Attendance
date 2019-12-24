@@ -1,7 +1,6 @@
 import {AsyncStorage} from 'react-native';
 
 import Time from '../../constants/Time';
-import University from '../../constants/University';
 import * as LocationPicker from "../../components/LocationPicker";
 import ParticipatedClass from "../../models/participatedClass";
 
@@ -59,12 +58,13 @@ const checkIfInTime = (classItem, date) => {
   return startDate < date && endDate > date;
 };
 
-const distance = (lat, lon) => {
+const distance = (lat1, lon1, lat2, lon2) => {
   let p = 0.017453292519943295;
   let c = Math.cos;
-  let a = 0.5 - c((University.lat - lat) * p) / 2 +
-    c(lat * p) * c(University.lat * p) *
-    (1 - c((University.lng - lon) * p)) / 2;
+  let a = 0.5 - c((lat2 - lat1) * p)/2 +
+          c(lat1 * p) * c(lat2 * p) *
+          (1 - c((lon2 - lon1) * p))/2;
+
   return 12742 * Math.asin(Math.sqrt(a)) * 1000;
 };
 
@@ -86,11 +86,9 @@ export const participate = (classItem) => {
       const getResponse = async () => {
         await getCoords();
         if (coords.length !== 0) {
-          /*
-          change if to real (distance(coords[0], coords[1]) < 10 && checkIfInTime(classItem, date))
-           */
-          if (true) {
-            console.log("DISTANCE: " + distance(coords[0], coords[1]));
+          console.log("DISTANCE: " + distance(coords[0], coords[1], classItem.lat, classItem.lng));
+
+          if ((distance(coords[0], coords[1], classItem.lat, classItem.lng) < 10 && checkIfInTime(classItem, date))) {
             response = await fetch(
               `https://foodproject-13e46.firebaseio.com/participatedClasses/${userId}.json`,
               {
@@ -99,10 +97,10 @@ export const participate = (classItem) => {
                 body: JSON.stringify({name: classItem.name, date: date.toISOString()})
               }
             );
-          } else if (distance(coords[0], coords[1]) > 10) {
-            throw new Error("The distance to the class is too big: " + distance(coords[0], coords[1]).toFixed(1) + "m");
           } else if (!checkIfInTime(classItem, date)) {
-            throw new Error("Time of request doesn't match the time of the class");
+            throw new Error("Time of request doesn't match the time of the class" + distance(coords[0], coords[1], classItem.lat, classItem.lng).toFixed(1) + "m");
+          } else if (distance(coords[0], coords[1], classItem.lat, classItem.lng) > 10) {
+            throw new Error("The distance to the class is too big: " + distance(coords[0], coords[1], classItem.lat, classItem.lng).toFixed(1) + "m");
           }
         }
       };
@@ -113,9 +111,7 @@ export const participate = (classItem) => {
         throw new Error(e.message);
       }
 
-      /*
-      REAL DISPATCH IN COMMENTS
-       */
+
       dispatch({
         type: PARTICIPATE,
         participatedClassData: {
@@ -123,13 +119,6 @@ export const participate = (classItem) => {
           date: response ? date : null
         }
       });
-      /*dispatch({
-        type: PARTICIPATE,
-        participatedClassData: {
-          name: classItem.name,
-          date: date
-        }
-      });*/
       await saveDataToStorage(classItem.name);
     };
 
@@ -139,8 +128,8 @@ export const participate = (classItem) => {
 let storageData = [];
 
 const saveDataToStorage = async (className) => {
-  await AsyncStorage.removeItem('participatedClassesNames');
-  /*const storageItems = await AsyncStorage.getItem('participatedClassesNames');
+  //await AsyncStorage.removeItem('participatedClassesNames');
+  const storageItems = await AsyncStorage.getItem('participatedClassesNames');
   if (typeof storageItems !== 'undefined' && storageItems !== null) {
     storageData.concat(storageItems);
   }
@@ -148,5 +137,5 @@ const saveDataToStorage = async (className) => {
   AsyncStorage.setItem(
     'participatedClassesNames',
     JSON.stringify(storageData)
-  );*/
+  );
 };

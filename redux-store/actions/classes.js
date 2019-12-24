@@ -51,8 +51,8 @@ export const fetchClasses = () => {
     const userId = getState().authReducer.userId;
     const date = new Date();
     const weekType = getWeekType(date.getDay());
-    //const dayOfWeek = getDayString(date.getDay());
-    const dayOfWeek = "wed";
+    const dayOfWeek = getDayString(date.getDay());
+    //const dayOfWeek = "wed";
     try {
       const response = await fetch(
         `https://foodproject-13e46.firebaseio.com/schedule/${weekType}/${dayOfWeek}.json`
