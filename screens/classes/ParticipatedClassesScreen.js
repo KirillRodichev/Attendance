@@ -6,8 +6,6 @@ import {
   Button,
   StyleSheet,
   ActivityIndicator,
-  Platform,
-  AsyncStorage
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -15,7 +13,7 @@ import ParticipatedClassItem from '../../components/UI/ParticipatedClassItem';
 import Colors from "../../constants/Colors";
 import * as participateActions from "../../redux-store/actions/participate";
 
-const ParticipatedClassesScreen = props => {
+const ParticipatedClassesScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
@@ -85,7 +83,7 @@ const ParticipatedClassesScreen = props => {
   );
 };
 
-ParticipatedClassesScreen.navigationOptions = navData => {
+ParticipatedClassesScreen.navigationOptions = () => {
   return {
     headerTitle: 'Participated Classes',
   };

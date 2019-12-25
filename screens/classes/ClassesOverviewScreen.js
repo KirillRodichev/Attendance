@@ -4,11 +4,9 @@ import {
   Text,
   FlatList,
   Button,
-  Platform,
   ActivityIndicator,
   StyleSheet,
   TouchableOpacity,
-  AsyncStorage,
   Alert,
   Modal
 } from 'react-native';
@@ -20,7 +18,7 @@ import Colors from '../../constants/Colors';
 import * as classesActions from '../../redux-store/actions/classes';
 import * as participateActions from '../../redux-store/actions/participate';
 
-const ClassesOverviewScreen = props => {
+const ClassesOverviewScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState();
@@ -42,8 +40,8 @@ const ClassesOverviewScreen = props => {
   const participateClassHandler = async item => {
     let participated = false;
     Alert.alert(
-      'Think twice!',
-      'If you choose to participate the class, your position and time of request posts to server. And after checking this data class disappears from the list in any case.',
+      'Are you sure?',
+      'Do you really want to participate the class',
       [
         {text: 'Cancel', style: 'cancel'},
         {
@@ -118,7 +116,7 @@ const ClassesOverviewScreen = props => {
           animationType='slide'
           presentationStyle="formSheet"
         >
-          <View style={{justifyContent: 'center', alignItems: 'center', height: '100%'}}>
+          <View style={styles.loader}>
             <ActivityIndicator size="large" color={Colors.primary}/>
             <Text style={{marginTop: 20}}>Please wait, we're getting your location</Text>
           </View>
@@ -156,7 +154,7 @@ const ClassesOverviewScreen = props => {
   );
 };
 
-ClassesOverviewScreen.navigationOptions = navData => {
+ClassesOverviewScreen.navigationOptions = () => {
   return {
     headerTitle: "Today's schedule ",
   };
@@ -184,6 +182,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
     color: Colors.primary
   },
+  loader: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%'
+  }
 });
 
 export default ClassesOverviewScreen;

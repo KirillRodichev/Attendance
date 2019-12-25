@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
   itemContainer: {
     margin: 20,
     overflow: 'hidden',
-    //backgroundColor: '#00FF91'
   },
   textContainer: {
     flexDirection: 'column',

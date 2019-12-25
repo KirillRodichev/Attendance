@@ -6,9 +6,9 @@ import {
   Button,
   ActivityIndicator,
   Alert,
-  AsyncStorage,
   Image,
-  Picker, FlatList, Text
+  Picker,
+  Text
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
@@ -20,15 +20,11 @@ import * as superClassesActions from "../../redux-store/actions/classes";
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 
 const formReducer = (state, action) => {
-  console.log("AuthScreen: form reducer");
   if (action.type === FORM_INPUT_UPDATE) {
-    console.log("AuthScreen: action.type == FORM_INPUT_UPDATE");
-    console.log("AuthScreen: creating updatedValues");
     const updatedValues = {
       ...state.inputValues,
       [action.input]: action.value
     };
-    console.log("AuthScreen: updatedValidities");
     const updatedValidities = {
       ...state.inputValidities,
       [action.input]: action.isValid
@@ -37,8 +33,6 @@ const formReducer = (state, action) => {
     for (const key in updatedValidities) {
       updatedFormIsValid = updatedFormIsValid && updatedValidities[key];
     }
-    console.log("AuthScreen: setting updatedForm validity");
-    console.log("AuthScreen: returning formIsValid, inputValidities, inputValues");
     return {
       formIsValid: updatedFormIsValid,
       inputValidities: updatedValidities,
@@ -71,22 +65,6 @@ const AuthScreen = props => {
       }
     }
   };
-
-  /*useEffect(() => {
-    const getUserData = async () => {
-      const userData = await AsyncStorage.getItem('userData');
-      if (!userData) {
-        console.log("\nAuthScreen: userData is EMPTY");
-      } else {
-        const transformedData = JSON.parse(userData);
-        console.log("\nAuthScreen: userData:");
-        for (const key in transformedData) {
-          console.log(key + ": " + transformedData[key]);
-        }
-      }
-    };
-    getUserData();
-  });*/
 
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
@@ -148,7 +126,7 @@ const AuthScreen = props => {
 
   return (
     <KeyboardAvoidingView behavior="padding">
-      <View style={{alignItems: 'center', justifyContent: 'center', height: '100%', width: '100%', backgroundColor: pickerVisible ? Colors.grey220 : "#fff"}}>
+      <View style={[styles.imageContainer, {backgroundColor: pickerVisible ? Colors.grey220 : "#fff"}]}>
         <View style={{width: 150, height: 150}}>
           <Image
             style={{width: '100%', height: '100%'}}
@@ -179,8 +157,7 @@ const AuthScreen = props => {
                           pickerVisible ? setPickerVisible(false) : setPickerVisible(true);
                         }}
                       />
-                      <View style={{flexDirection: 'column', marginBottom: 10, borderBottomWidth: 1,
-                        borderBottomColor: '#d6d6d6',}}>
+                      <View style={styles.nameField}>
                         <Text style={{fontFamily: 'open-sans',}}>
                           Name
                         </Text>
@@ -234,7 +211,7 @@ const AuthScreen = props => {
             />
           )}
         </View>
-        <View style={styles.buttonContainer}>
+        <View>
           <Button
             title={`Switch to ${isSignup ? 'Login' : 'Sign Up'}`}
             color={Colors.grey100}
@@ -246,7 +223,7 @@ const AuthScreen = props => {
 
         {isSignup
           ? (
-            <View style={{width: '100%', height: 100, position: 'absolute', bottom: 100, zIndex: pickerVisible ? 111 : -1}}>
+            <View style={[styles.pickerContainer, {zIndex: pickerVisible ? 111 : -1}]}>
               {pickerVisible
                 ? (
                   <Picker
@@ -275,6 +252,24 @@ AuthScreen.navigationOptions = {
 };
 
 const styles = StyleSheet.create({
+  pickerContainer: {
+    width: '100%',
+    height: 100,
+    position: 'absolute',
+    bottom: 100,
+  },
+  nameField: {
+    flexDirection: 'column',
+    marginBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#d6d6d6'
+  },
+  imageContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
+    width: '100%',
+    }
 });
 
 export default AuthScreen;

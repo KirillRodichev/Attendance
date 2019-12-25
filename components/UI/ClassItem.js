@@ -2,15 +2,13 @@ import React from 'react';
 import {
   View,
   Text,
-  Image,
   StyleSheet,
   TouchableOpacity,
   TouchableNativeFeedback,
-  Platform, ActivityIndicator
+  Platform
 } from 'react-native';
 
 import Card from './Card';
-import Colors from "../../constants/Colors";
 
 const ClassItem = props => {
   let TouchableCmp = TouchableOpacity;

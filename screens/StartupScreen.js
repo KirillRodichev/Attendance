@@ -1,13 +1,10 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   StyleSheet,
   AsyncStorage,
-  Platform,
-  Text,
-  TouchableOpacity,
   Button,
-  Image, ActivityIndicator
+  Image
 } from 'react-native';
 import {useDispatch} from 'react-redux';
 

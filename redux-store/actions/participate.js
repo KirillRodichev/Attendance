@@ -52,10 +52,11 @@ const checkIfInTime = (classItem, date) => {
   console.log(
     "\ncurrentDate: " + date +
     "\nlessonStarts: " + startDate +
-    "\nlessonEnds: " + endDate
+    "\nlessonEnds: " + endDate,
+    "\nreturn: ", (startDate < date) && (endDate > date)
   );
 
-  return startDate < date && endDate > date;
+  return (startDate < date) && (endDate > date);
 };
 
 const distance = (lat1, lon1, lat2, lon2) => {
@@ -75,6 +76,7 @@ export const participate = (classItem) => {
       const date = new Date();
       let response = null;
 
+      console.log("cur date of request: ", date);
       console.log("COORDS FROM DB:");
       console.log("lat: ", classItem.lat, "lng: ", classItem.lng);
 
@@ -87,8 +89,7 @@ export const participate = (classItem) => {
         await getCoords();
         if (coords.length !== 0) {
           console.log("DISTANCE: " + distance(coords[0], coords[1], classItem.lat, classItem.lng));
-
-          if ((distance(coords[0], coords[1], classItem.lat, classItem.lng) < 10 && checkIfInTime(classItem, date))) {
+          if (distance(coords[0], coords[1], classItem.lat, classItem.lng) <= 10 && checkIfInTime(classItem, date)) {
             response = await fetch(
               `https://foodproject-13e46.firebaseio.com/participatedClasses/${userId}.json`,
               {
@@ -98,7 +99,7 @@ export const participate = (classItem) => {
               }
             );
           } else if (!checkIfInTime(classItem, date)) {
-            throw new Error("Time of request doesn't match the time of the class" + distance(coords[0], coords[1], classItem.lat, classItem.lng).toFixed(1) + "m");
+            throw new Error("Time of request doesn't match the time of the class. Distance to the class: " + distance(coords[0], coords[1], classItem.lat, classItem.lng).toFixed(1) + "m");
           } else if (distance(coords[0], coords[1], classItem.lat, classItem.lng) > 10) {
             throw new Error("The distance to the class is too big: " + distance(coords[0], coords[1], classItem.lat, classItem.lng).toFixed(1) + "m");
           }
@@ -110,7 +111,6 @@ export const participate = (classItem) => {
       } catch (e) {
         throw new Error(e.message);
       }
-
 
       dispatch({
         type: PARTICIPATE,

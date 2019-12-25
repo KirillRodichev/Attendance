@@ -1,12 +1,10 @@
-import {AsyncStorage} from 'react-native';
-
 import Student from "../../models/student";
 
 export const DELETE_STUDENT = 'DELETE_STUDENT';
 export const SET_STUDENTS = 'SET_STUDENTS';
 
 export const fetchStudents = groupNumber => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     try {
       const response = await fetch(
         `https://foodproject-13e46.firebaseio.com/students/${groupNumber}.json`
@@ -24,7 +22,7 @@ export const fetchStudents = groupNumber => {
       for (const key in responseData) {
         loadedStudents.push(new Student(key, groupNumber));
       }
-      //console.log(loadedStudents);
+
       dispatch({type: SET_STUDENTS, students: loadedStudents});
     } catch (err) {
       throw err;
@@ -33,7 +31,7 @@ export const fetchStudents = groupNumber => {
 };
 
 export const deleteStudent = (studentName, groupNumber) => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     const response = await fetch(
       `https://foodproject-13e46.firebaseio.com/students/${groupNumber}/${studentName}.json`,
       { method: 'DELETE' }
