@@ -26,20 +26,14 @@ const StartupScreen = props => {
       let results = await LocalAuthentication.authenticateAsync();
       if (results.success) {
         props.navigation.navigate('Classes');
-      } else {
-        //setIsFailedCount(isFailedCount + 1);
       }
     } catch (e) {
-      console.log(e);
+      throw new Error(e);
     }
   };
 
   useEffect(() => {
     const tryLogin = async () => {
-      /*
-      REMOVE: await AsyncStorage.removeItem('userData');
-       */
-      //await AsyncStorage.removeItem('userData');
       const userData = await AsyncStorage.getItem('userData');
       if (!userData) {
         await dispatch(studentsActions.fetchStudents("6311"));
@@ -48,11 +42,6 @@ const StartupScreen = props => {
       }
 
       const transformedData = JSON.parse(userData);
-
-      console.log("StartupScreen: parsed userData:");
-      for (const key in transformedData) {
-        console.log(key + ": " + transformedData[key]);
-      }
 
       const {token, userId, expiryDate, email, password, userName, userGroup} = transformedData;
       userInfo.name = userName;

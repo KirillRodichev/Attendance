@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,7 @@ import {
   Alert,
   Modal
 } from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import ClassItem from '../../components/UI/ClassItem';
 import Colors from '../../constants/Colors';
@@ -19,12 +19,12 @@ import * as classesActions from '../../redux-store/actions/classes';
 import * as participateActions from '../../redux-store/actions/participate';
 
 const ClassesOverviewScreen = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [error, setError] = useState();
+  const [ isLoading, setIsLoading ] = useState(false);
+  const [ isRefreshing, setIsRefreshing ] = useState(false);
+  const [ error, setError ] = useState();
+  const [ isButtonLoading, setIsButtonLoading ] = useState(false);
   const myClasses = useSelector(state => state.classesReducer.availableClasses);
   const dispatch = useDispatch();
-  const [isButtonLoading, setIsButtonLoading] = useState(false);
 
   const loadClasses = useCallback(async () => {
     setError(null);
@@ -35,7 +35,7 @@ const ClassesOverviewScreen = () => {
       setError(err.message);
     }
     setIsRefreshing(false);
-  }, [dispatch, setIsLoading, setError]);
+  }, [ dispatch, setIsLoading, setError ]);
 
   const participateClassHandler = async item => {
     let participated = false;
@@ -43,7 +43,7 @@ const ClassesOverviewScreen = () => {
       'Are you sure?',
       'Do you really want to participate the class',
       [
-        {text: 'Cancel', style: 'cancel'},
+        { text: 'Cancel', style: 'cancel' },
         {
           text: 'Confirm',
           onPress: async () => {
@@ -55,7 +55,7 @@ const ClassesOverviewScreen = () => {
               setTimeout(() => Alert.alert(
                 "You can't participate the class",
                 e.message,
-                [{text: 'Ok', style: 'cancel'}]
+                [ { text: 'Ok', style: 'cancel' } ]
               ), 1000);
             }
             setIsButtonLoading(false);
@@ -64,7 +64,7 @@ const ClassesOverviewScreen = () => {
               setTimeout(() => Alert.alert(
                 "Participated!",
                 "You can check it in Participated Classes",
-                [{text: 'Ok', style: 'cancel'}]
+                [ { text: 'Ok', style: 'cancel' } ]
               ), 1000);
             }
           }
@@ -77,16 +77,16 @@ const ClassesOverviewScreen = () => {
     loadClasses().then(() => {
       setIsLoading(false);
     });
-  }, [dispatch, loadClasses]);
+  }, [ dispatch, loadClasses ]);
 
   if (error) {
     return (
-      <View style={styles.centered}>
+      <View style={ styles.centered }>
         <Text>An error occurred, when loading classes. May be classes doesn't exist</Text>
         <Button
           title="Try again"
-          onPress={loadClasses}
-          color={Colors.primary}
+          onPress={ loadClasses }
+          color={ Colors.primary }
         />
       </View>
     );
@@ -94,60 +94,60 @@ const ClassesOverviewScreen = () => {
 
   if (isLoading) {
     return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color={Colors.primary}/>
+      <View style={ styles.centered }>
+        <ActivityIndicator size="large" color={ Colors.primary }/>
       </View>
     );
   }
 
   if (!isLoading && myClasses.length === 0) {
     return (
-      <View style={styles.centered}>
+      <View style={ styles.centered }>
         <Text>No classes found! may be they are not added</Text>
       </View>
     );
   }
 
   return (
-    <View style={{flex: 1}}>
-      {isButtonLoading ? (
+    <View style={ { flex: 1 } }>
+      { isButtonLoading ? (
         <Modal
-          visible={isButtonLoading}
+          visible={ isButtonLoading }
           animationType='slide'
           presentationStyle="formSheet"
         >
-          <View style={styles.loader}>
-            <ActivityIndicator size="large" color={Colors.primary}/>
-            <Text style={{marginTop: 20}}>Please wait, we're getting your location</Text>
+          <View style={ styles.loader }>
+            <ActivityIndicator size="large" color={ Colors.primary }/>
+            <Text style={ { marginTop: 20 } }>Please wait, we're getting your location</Text>
           </View>
         </Modal>
       ) : (
         null
-      )}
+      ) }
       <FlatList
-        onRefresh={loadClasses}
-        refreshing={isRefreshing}
-        data={myClasses}
-        keyExtractor={item => item.name}
-        renderItem={itemData => (
+        onRefresh={ loadClasses }
+        refreshing={ isRefreshing }
+        data={ myClasses }
+        keyExtractor={ item => item.name }
+        renderItem={ itemData => (
           <ClassItem
-            name={itemData.item.name}
-            cabinet={itemData.item.cabinet}
-            teacher={itemData.item.teacher}
-            type={itemData.item.type}
-            onSelect={() => {
-            }}
+            name={ itemData.item.name }
+            cabinet={ itemData.item.cabinet }
+            teacher={ itemData.item.teacher }
+            type={ itemData.item.type }
+            onSelect={ () => {
+            } }
           >
             <TouchableOpacity
-              style={styles.enterButton}
-              onPress={() => {
+              style={ styles.enterButton }
+              onPress={ () => {
                 participateClassHandler(itemData.item);
-              }}
+              } }
             >
-              <Text style={styles.buttonText}>Enter class</Text>
+              <Text style={ styles.buttonText }>Enter class</Text>
             </TouchableOpacity>
           </ClassItem>
-        )}
+        ) }
       />
     </View>
 
@@ -161,7 +161,7 @@ ClassesOverviewScreen.navigationOptions = () => {
 };
 
 const styles = StyleSheet.create({
-  centered: {flex: 1, justifyContent: 'center', alignItems: 'center'},
+  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   backgroundContainer: {
     width: '100%',
     height: '100%',

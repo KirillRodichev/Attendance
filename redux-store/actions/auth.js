@@ -1,6 +1,7 @@
 import {AsyncStorage} from 'react-native';
 
 import * as studentsActions from "../actions/students";
+import Firebase from "../../constants/Firebase";
 
 export const AUTHENTICATE = 'AUTHENTICATE';
 export const PSEUDO_AUTHENTICATE = 'PSEUDO_AUTHENTICATE';
@@ -9,10 +10,8 @@ export const LOGOUT = 'LOGOUT';
 let timer;
 
 export const authenticate = (userId, token, expiryTime) => {
-  console.log("AUTHENTICATE action\n");
   return dispatch => {
     dispatch(setLogoutTimer(expiryTime));
-    console.log("\nTIMER: " + timer + "\n");
     dispatch({
         type: AUTHENTICATE,
         userId: userId,
@@ -22,10 +21,8 @@ export const authenticate = (userId, token, expiryTime) => {
 };
 
 export const pseudoAuthenticate = (email, password) => {
-  console.log("PSEUDO_AUTHENTICATE action\n");
   return dispatch => {
-    dispatch(
-      {
+    dispatch({
         type: PSEUDO_AUTHENTICATE,
         email: email,
         password: password,
@@ -37,7 +34,7 @@ export const pseudoAuthenticate = (email, password) => {
 export const signup = (email, password, userName) => {
   return async dispatch => {
     const response = await fetch(
-      'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBv-Zly_0dVHgjhuYgosTWLBcRyjPWVuAs',
+      `${ Firebase.authURL }v1/accounts:signUp?key=${ Firebase.authKey }`,
       {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -86,7 +83,7 @@ export const signup = (email, password, userName) => {
 export const login = (email, password) => {
   return async dispatch => {
     const response = await fetch(
-      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBv-Zly_0dVHgjhuYgosTWLBcRyjPWVuAs',
+      `${ Firebase.authURL }v1/accounts:signInWithPassword?key=${ Firebase.authKey }`,
       {
         method: 'POST',
         headers: {

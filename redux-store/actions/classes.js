@@ -1,6 +1,7 @@
-import {AsyncStorage} from 'react-native';
+import { AsyncStorage } from 'react-native';
 
 import UniversityClass from '../../models/universityClass';
+import Firebase from '../../constants/Firebase';
 
 export const FINISH_CLASS = 'FINISH_CLASS';
 export const SET_SUPERCLASS = 'SET_SUPERCLASS';
@@ -51,11 +52,11 @@ export const fetchClasses = () => {
     const userId = getState().authReducer.userId;
     const date = new Date();
     const weekType = getWeekType(date.getDay());
-    const dayOfWeek = getDayString(date.getDay());
-    //const dayOfWeek = "wed";
+    //const dayOfWeek = getDayString(date.getDay());
+    const dayOfWeek = "wed";
     try {
       const response = await fetch(
-        `https://foodproject-13e46.firebaseio.com/schedule/${weekType}/${dayOfWeek}.json`
+        `${ Firebase.databaseURL }schedule/${ weekType }/${ dayOfWeek }.json`
       );
       const participatedClassesResponse = JSON.parse(await AsyncStorage.getItem('participatedClassesNames'));
       if (!response.ok) {
@@ -73,14 +74,14 @@ export const fetchClasses = () => {
         }
       }
       const responseNew = await fetch(
-        `https://foodproject-13e46.firebaseio.com/todaySchedule/${userId}.json`,
+        `${ Firebase.databaseURL }todaySchedule/${ userId }.json`,
         {
           method: 'PUT',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({todayClasses: responseData})
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ todayClasses: responseData })
         }
       );
-      dispatch({type: SET_SUPERCLASS, superClasses: loadedClasses,});
+      dispatch({ type: SET_SUPERCLASS, superClasses: loadedClasses, });
     } catch (err) {
       throw err;
     }
@@ -92,7 +93,7 @@ export const fetchTodayClasses = () => {
     const userId = getState().authReducer.userId;
     try {
       const response = await fetch(
-        `https://foodproject-13e46.firebaseio.com/todaySchedule/${userId}/todayClasses.json`
+        `${ Firebase.databaseURL }todaySchedule/${ userId }/todayClasses.json`
       );
       const participatedClassesResponse = JSON.parse(await AsyncStorage.getItem('participatedClassesNames'));
       if (!response.ok) {
@@ -109,7 +110,7 @@ export const fetchTodayClasses = () => {
           pushToClass(loadedTodayClasses, key, responseData);
         }
       }
-      dispatch({type: SET_CLASSES, todayClasses: loadedTodayClasses,});
+      dispatch({ type: SET_CLASSES, todayClasses: loadedTodayClasses, });
     } catch (err) {
       throw err;
     }
@@ -120,12 +121,12 @@ export const finishClass = className => {
   return async (dispatch, getState) => {
     const userId = getState().authReducer.userId;
     const response = await fetch(
-      `https://foodproject-13e46.firebaseio.com/todaySchedule/${userId}/todayClasses/${className}.json`,
+      `${ Firebase.databaseURL }todaySchedule/${ userId }/todayClasses/${ className }.json`,
       { method: 'DELETE' }
     );
     if (!response.ok) {
       throw new Error('FINISH_CLASS: Something went wrong!');
     }
-    dispatch({type: FINISH_CLASS, className: className});
+    dispatch({ type: FINISH_CLASS, className: className });
   };
 };

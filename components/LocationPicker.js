@@ -1,7 +1,5 @@
-import React, {useState} from 'react';
-import {
-  Alert,
-} from 'react-native';
+import React from 'react';
+import { Alert, } from 'react-native';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 

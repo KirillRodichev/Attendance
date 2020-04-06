@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useReducer, useCallback} from 'react';
+import React, { useState, useEffect, useReducer, useCallback } from 'react';
 import {
   View,
   KeyboardAvoidingView,
@@ -10,7 +10,7 @@ import {
   Picker,
   Text
 } from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Input from '../../components/UI/Input';
 import Colors from '../../constants/Colors';
@@ -43,19 +43,18 @@ const formReducer = (state, action) => {
 };
 
 const AuthScreen = props => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [pickerVisible, setPickerVisible] = useState(false);
-  const [error, setError] = useState();
-  const [isSignup, setIsSignup] = useState(false);
+  const [ isLoading, setIsLoading ] = useState(false);
+  const [ pickerVisible, setPickerVisible ] = useState(false);
+  const [ error, setError ] = useState();
+  const [ isSignup, setIsSignup ] = useState(false);
   const availableStudents = useSelector(state => state.studentsReducer.availableStudents);
-  const [studentsNames, setStudentsNames] = useState({
+  const [ studentsNames, setStudentsNames ] = useState({
     names: [],
     name: ""
   });
   const dispatch = useDispatch();
 
   const pickerChange = (index) => {
-    console.log("AuthScreen: pickerChange");
     for (const key in studentsNames.names) {
       if (parseInt(key, 10) === index) {
         setStudentsNames({
@@ -66,7 +65,7 @@ const AuthScreen = props => {
     }
   };
 
-  const [formState, dispatchFormState] = useReducer(formReducer, {
+  const [ formState, dispatchFormState ] = useReducer(formReducer, {
     inputValues: {
       email: '',
       password: '',
@@ -82,9 +81,9 @@ const AuthScreen = props => {
 
   useEffect(() => {
     if (error) {
-      Alert.alert('An Error Occurred!', error, [{text: 'Okay'}]);
+      Alert.alert('An Error Occurred!', error, [ { text: 'Okay' } ]);
     }
-  }, [error]);
+  }, [ error ]);
 
   const authHandler = async () => {
     let action;
@@ -121,33 +120,33 @@ const AuthScreen = props => {
         input: inputIdentifier
       });
     },
-    [dispatchFormState]
+    [ dispatchFormState ]
   );
 
   return (
     <KeyboardAvoidingView behavior="padding">
-      <View style={[styles.imageContainer, {backgroundColor: pickerVisible ? Colors.grey220 : "#fff"}]}>
-        <View style={{width: 150, height: 150}}>
+      <View style={ [ styles.imageContainer, { backgroundColor: pickerVisible ? Colors.grey220 : "#fff" } ] }>
+        <View style={ { width: 150, height: 150 } }>
           <Image
-            style={{width: '100%', height: '100%'}}
-            source={require('../../assets/falcon.png')}
+            style={ { width: '100%', height: '100%' } }
+            source={ require('../../assets/falcon.png') }
           />
         </View>
-        <View style={{width: '70%', maxWidth: 400}}>
-          {isSignup ? (
+        <View style={ { width: '70%', maxWidth: 400 } }>
+          { isSignup ? (
             <View>
               <View>
-                {availableStudents.length === 0
+                { availableStudents.length === 0
                   ? (
-                    <View style={styles.centered}>
-                      <ActivityIndicator size="small" color={Colors.primary}/>
+                    <View style={ styles.centered }>
+                      <ActivityIndicator size="small" color={ Colors.primary }/>
                     </View>
                   )
                   : (
                     <View>
                       <Button
-                        title={pickerVisible ? "Yeah! This is me" : "Pick a name"}
-                        onPress={() => {
+                        title={ pickerVisible ? "Yeah! This is me" : "Pick a name" }
+                        onPress={ () => {
                           setStudentsNames({
                             names: availableStudents.map((student) => {
                               return student.name;
@@ -155,27 +154,28 @@ const AuthScreen = props => {
                             name: studentsNames.name,
                           });
                           pickerVisible ? setPickerVisible(false) : setPickerVisible(true);
-                        }}
+                        } }
                       />
-                      <View style={styles.nameField}>
-                        <Text style={{fontFamily: 'open-sans',}}>
+                      <View style={ styles.nameField }>
+                        <Text style={ { fontFamily: 'open-sans', } }>
                           Name
                         </Text>
-                        <Text style={{
+                        <Text style={ {
                           fontFamily: 'open-sans',
                           marginTop: 10,
                           height: 25,
-                          fontSize: 16}}>
-                          {studentsNames.name ? studentsNames.name : ""}
+                          fontSize: 16
+                        } }>
+                          { studentsNames.name ? studentsNames.name : "" }
                         </Text>
                       </View>
                     </View>
-                  )}
+                  ) }
               </View>
             </View>
           ) : (
             null
-          )}
+          ) }
           <Input
             id="email"
             label="E-Mail"
@@ -184,7 +184,7 @@ const AuthScreen = props => {
             email
             autoCapitalize="none"
             errorText="Please enter a valid email address."
-            onInputChange={inputChangeHandler}
+            onInputChange={ inputChangeHandler }
             initialValue=""
           />
           <Input
@@ -193,47 +193,47 @@ const AuthScreen = props => {
             keyboardType="default"
             secureTextEntry
             required
-            minLength={5}
+            minLength={ 5 }
             autoCapitalize="none"
             errorText="Please enter a valid password."
-            onInputChange={inputChangeHandler}
+            onInputChange={ inputChangeHandler }
             initialValue=""
           />
         </View>
         <View>
-          {isLoading ? (
-            <ActivityIndicator size="small" color={Colors.primary}/>
+          { isLoading ? (
+            <ActivityIndicator size="small" color={ Colors.primary }/>
           ) : (
             <Button
-              title={isSignup ? 'Sign Up' : 'Login'}
-              color={Colors.primary}
-              onPress={authHandler}
+              title={ isSignup ? 'Sign Up' : 'Login' }
+              color={ Colors.primary }
+              onPress={ authHandler }
             />
-          )}
+          ) }
         </View>
         <View>
           <Button
-            title={`Switch to ${isSignup ? 'Login' : 'Sign Up'}`}
-            color={Colors.grey100}
-            onPress={() => {
+            title={ `Switch to ${ isSignup ? 'Login' : 'Sign Up' }` }
+            color={ Colors.grey100 }
+            onPress={ () => {
               setIsSignup(prevState => !prevState);
-            }}
+            } }
           />
         </View>
 
-        {isSignup
+        { isSignup
           ? (
-            <View style={[styles.pickerContainer, {zIndex: pickerVisible ? 111 : -1}]}>
-              {pickerVisible
+            <View style={ [ styles.pickerContainer, { zIndex: pickerVisible ? 111 : -1 } ] }>
+              { pickerVisible
                 ? (
                   <Picker
-                    style={{backgroundColor: "#fff"}}
-                    selectedValue={studentsNames.name}
-                    onValueChange={(itemValue, itemIndex) => pickerChange(itemIndex)}
+                    style={ { backgroundColor: "#fff" } }
+                    selectedValue={ studentsNames.name }
+                    onValueChange={ (itemValue, itemIndex) => pickerChange(itemIndex) }
                   >
                     {
                       studentsNames.names.map((name) => {
-                        return <Picker.Item label={name} value={name}/>
+                        return <Picker.Item label={ name } value={ name }/>
                       })
                     }
                   </Picker>
@@ -241,7 +241,7 @@ const AuthScreen = props => {
                 : null
               }
             </View>
-          ) : null}
+          ) : null }
       </View>
     </KeyboardAvoidingView>
   );
@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: '100%',
     width: '100%',
-    }
+  }
 });
 
 export default AuthScreen;
