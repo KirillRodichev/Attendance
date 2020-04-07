@@ -30,10 +30,10 @@ To achieve this, the **following conditions** were necessary
 
 ### Screenshots
 
-|    |
-|    :---:      |
-| ![](https://github.com/KirillRodichev/ReadmeResources/blob/master/Attendance/images/3.jpg)    ![](https://github.com/KirillRodichev/ReadmeResources/blob/master/Attendance/images/5.jpg)   ![](https://github.com/KirillRodichev/ReadmeResources/blob/master/Attendance/images/6.jpg) |
-| ![](https://github.com/KirillRodichev/ReadmeResources/blob/master/Attendance/images/7.jpg)    ![](https://github.com/KirillRodichev/ReadmeResources/blob/master/Attendance/images/8.jpg)   ![](https://github.com/KirillRodichev/ReadmeResources/blob/master/Attendance/images/9.jpg) |
-| ![](https://github.com/KirillRodichev/ReadmeResources/blob/master/Attendance/images/10.jpg)   ![](https://github.com/KirillRodichev/ReadmeResources/blob/master/Attendance/images/1.jpg)   ![](https://github.com/KirillRodichev/ReadmeResources/blob/master/Attendance/images/2.jpg) |
+|  |  |  |
+|    :---:      |    :---:      |    :---:      |
+| ![](https://github.com/KirillRodichev/ReadmeResources/blob/master/Attendance/images/3.jpg)   | ![](https://github.com/KirillRodichev/ReadmeResources/blob/master/Attendance/images/5.jpg)     | ![](https://github.com/KirillRodichev/ReadmeResources/blob/master/Attendance/images/6.jpg)    |
+| ![](https://github.com/KirillRodichev/ReadmeResources/blob/master/Attendance/images/7.jpg)   | ![](https://github.com/KirillRodichev/ReadmeResources/blob/master/Attendance/images/8.jpg)     | ![](https://github.com/KirillRodichev/ReadmeResources/blob/master/Attendance/images/9.jpg)    |
+| ![](https://github.com/KirillRodichev/ReadmeResources/blob/master/Attendance/images/10.jpg)  | ![](https://github.com/KirillRodichev/ReadmeResources/blob/master/Attendance/images/1.jpg)     | ![](https://github.com/KirillRodichev/ReadmeResources/blob/master/Attendance/images/2.jpg)    |
 
  
